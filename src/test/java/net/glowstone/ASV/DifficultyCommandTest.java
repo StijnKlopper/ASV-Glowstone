@@ -4,7 +4,9 @@ import net.glowstone.GlowServer;
 import net.glowstone.GlowWorld;
 import net.glowstone.command.CommandTest;
 import net.glowstone.command.CommandUtils;
-import net.glowstone.command.minecraft.SaveAllCommand;
+import net.glowstone.command.LocalizedEnumNames;
+import net.glowstone.command.minecraft.DifficultyCommand;
+import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,47 +20,56 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 
-public class SaveAllCommandTest extends CommandTest<SaveAllCommand> {
+public class DifficultyCommandTest extends CommandTest<DifficultyCommand> {
 
     protected CommandSender opPlayer;
 
     private GlowWorld world;
 
     private GlowServer server;
-    private List<World> worlds;
-    public SaveAllCommandTest() {
-        super(SaveAllCommand::new);
-    }
 
+    
+    public DifficultyCommandTest() {
+        super(DifficultyCommand::new);
+    }
 
     @Before
     @Override
     public void before() {
         super.before();
+
         // arrange
-        opPlayer = PowerMockito.mock(Player.class);
         world = PowerMockito.mock(GlowWorld.class);
         server = PowerMockito.mock(GlowServer.class);
 
-        worlds = new ArrayList<World>();
-        worlds.add(world);
-        worlds.add(world);
-        worlds.add(world);
-
-        Mockito.when(opPlayer.getServer()).thenReturn(server);
-        Mockito.when(server.getWorlds()).thenReturn(worlds);
         Mockito.when(opSender.getServer()).thenReturn(server);
-
         PowerMockito.stub(PowerMockito.method(CommandUtils.class, "getWorld", CommandSender.class)).toReturn(world);
     }
 
+
     @Test
-    public void testExecute() {
-        //act & assert
-        assertThat(command.execute(opSender, "label", new String[2]), is(true));
-        Mockito.verify(world, times(3)).save();
+    public void executeNumber() {
+        // act
+        String args[] = new String[1];
+        args[0] = "0";
+
+        // assert
+        assertThat(command.execute(opSender, "label", args), is(true));
+        Mockito.verify(world).setDifficulty(Difficulty.PEACEFUL);
+    }
+
+    @Test
+    public void executeStringValue() {
+        //act
+        String args[] = new String[1];
+        args[0] = "hard";
+
+        // assert
+        assertThat(command.execute(opSender, "label", args), is(true));
+        Mockito.verify(world).setDifficulty(Difficulty.HARD);
     }
 }
 

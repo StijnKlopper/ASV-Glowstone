@@ -28,39 +28,44 @@ public class TimeCommandTest extends CommandTest<TimeCommand> {
     public void before() {
         super.before();
 
+        //arrange
         world = PowerMockito.mock(GlowWorld.class);
-
         PowerMockito.stub(PowerMockito.method(CommandUtils.class, "getWorld", CommandSender.class)).toReturn(world);
     }
 
     @Test
     public void testTimeDayCommand() {
+        //Act
         String[] args = new String[2];
         args[0] = "set";
         args[1] = "day";
 
+        //Assert
         assertThat(command.execute(opSender, "label", args), is(true));
         Mockito.verify(world).setTime(1000);
     }
 
     @Test
     public void testTimeNightCommand() {
+        //Act
         String[] args = new String[2];
         args[0] = "set";
         args[1] = "night";
 
+        //Assert
         assertThat(command.execute(opSender, "label", args), is(true));
         Mockito.verify(world).setTime(13000);
     }
 
     @Test
     public void testTimeValueCommand() {
+        //Act
         String[] args = new String[2];
         args[0] = "add";
         args[1] = "250";
         Mockito.when(world.getTime()).thenReturn(200l);
 
-
+        //Assert
         assertThat(command.execute(opSender, "label", args), is(true));
         Mockito.verify(world).setTime(450);
     }

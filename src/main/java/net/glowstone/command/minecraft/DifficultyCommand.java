@@ -41,6 +41,9 @@ public class DifficultyCommand extends GlowVanillaCommand {
                     .sendInColor(ChatColor.RED, sender, difficultyId);
             return false;
         }
+
+        System.out.println(difficulty);
+
         world.setDifficulty(difficulty);
         new LocalizedStringImpl("difficulty.done", messages.getResourceBundle())
                 .send(sender, world, DIFFICULTIES.valueToName(messages.getLocale(), difficulty));
