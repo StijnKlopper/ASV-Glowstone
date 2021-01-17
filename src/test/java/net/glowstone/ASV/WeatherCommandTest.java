@@ -37,7 +37,6 @@ public class WeatherCommandTest extends CommandTest<WeatherCommand> {
 
         Mockito.when(opPlayer.getServer()).thenReturn(server);
         Mockito.when(opSender.getServer()).thenReturn(server);
-        Mockito.when(world.getSeed()).thenReturn(100001l);
 
         PowerMockito.stub(PowerMockito.method(CommandUtils.class, "getWorld", CommandSender.class)).toReturn(world);
 
