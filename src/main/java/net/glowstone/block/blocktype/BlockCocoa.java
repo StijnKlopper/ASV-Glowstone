@@ -102,20 +102,7 @@ public class BlockCocoa extends BlockNeedsAttached implements IBlockGrowable {
         if (data instanceof CocoaPlant) {
             CocoaPlant cocoa = (CocoaPlant) data;
             CocoaPlantSize size = cocoa.getSize();
-            if (size == CocoaPlantSize.SMALL) {
-                cocoa.setSize(CocoaPlantSize.MEDIUM);
-            } else if (size == CocoaPlantSize.MEDIUM) {
-                cocoa.setSize(CocoaPlantSize.LARGE);
-            } else {
-                return;
-            }
-            GlowBlockState state = block.getState();
-            state.setData(cocoa);
-            BlockGrowEvent growEvent = new BlockGrowEvent(block, state);
-            EventFactory.getInstance().callEvent(growEvent);
-            if (!growEvent.isCancelled()) {
-                state.update(true);
-            }
+            determineCocoaSize(block, cocoa, size);
         } else {
             warnMaterialData(CocoaPlant.class, data);
         }
@@ -128,23 +115,27 @@ public class BlockCocoa extends BlockNeedsAttached implements IBlockGrowable {
             CocoaPlant cocoa = (CocoaPlant) data;
             CocoaPlantSize size = cocoa.getSize();
             if (size != CocoaPlantSize.LARGE && ThreadLocalRandom.current().nextInt(5) == 0) {
-                if (size == CocoaPlantSize.SMALL) {
-                    cocoa.setSize(CocoaPlantSize.MEDIUM);
-                } else if (size == CocoaPlantSize.MEDIUM) {
-                    cocoa.setSize(CocoaPlantSize.LARGE);
-                } else {
-                    return;
-                }
-                GlowBlockState state = block.getState();
-                state.setData(cocoa);
-                BlockGrowEvent growEvent = new BlockGrowEvent(block, state);
-                EventFactory.getInstance().callEvent(growEvent);
-                if (!growEvent.isCancelled()) {
-                    state.update(true);
-                }
+                determineCocoaSize(block, cocoa, size);
             }
         } else {
             warnMaterialData(CocoaPlant.class, data);
+        }
+    }
+
+    private void determineCocoaSize(GlowBlock block, CocoaPlant cocoa, CocoaPlantSize size) {
+        if (size == CocoaPlantSize.SMALL) {
+            cocoa.setSize(CocoaPlantSize.MEDIUM);
+        } else if (size == CocoaPlantSize.MEDIUM) {
+            cocoa.setSize(CocoaPlantSize.LARGE);
+        } else {
+            return;
+        }
+        GlowBlockState state = block.getState();
+        state.setData(cocoa);
+        BlockGrowEvent growEvent = new BlockGrowEvent(block, state);
+        EventFactory.getInstance().callEvent(growEvent);
+        if (!growEvent.isCancelled()) {
+            state.update(true);
         }
     }
 }

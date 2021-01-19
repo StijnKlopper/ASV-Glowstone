@@ -1924,8 +1924,7 @@ public class GlowServer implements Server {
     ////////////////////////////////////////////////////////////////////////////
     // Player management
 
-    @Override
-    public Collection<? extends Player> getOnlinePlayers() {
+    public Collection<? extends Player> getOnlineView() {
         return onlineView;
     }
 
@@ -1974,7 +1973,7 @@ public class GlowServer implements Server {
         name = name.toLowerCase();
         Player bestPlayer = null;
         int bestDelta = -1;
-        for (Player player : getOnlinePlayers()) {
+        for (Player player : getOnlineView()) {
             if (player.getName().toLowerCase().startsWith(name)) {
                 int delta = player.getName().length() - name.length();
                 if (bestPlayer == null || delta < bestDelta) {
@@ -1987,7 +1986,7 @@ public class GlowServer implements Server {
 
     @Override
     public Player getPlayer(UUID uuid) {
-        for (Player player : getOnlinePlayers()) {
+        for (Player player : getOnlineView()) {
             if (player.getUniqueId().equals(uuid)) {
                 return player;
             }
@@ -2003,7 +2002,7 @@ public class GlowServer implements Server {
 
     @Override
     public Player getPlayerExact(String name) {
-        for (Player player : getOnlinePlayers()) {
+        for (Player player : getOnlineView()) {
             if (player.getName().equalsIgnoreCase(name)) {
                 return player;
             }
@@ -2016,7 +2015,7 @@ public class GlowServer implements Server {
         name = name.toLowerCase();
 
         ArrayList<Player> result = new ArrayList<>();
-        for (Player player : getOnlinePlayers()) {
+        for (Player player : getOnlineView()) {
             String lower = player.getName().toLowerCase();
             if (lower.equals(name)) {
                 result.clear();
@@ -2119,7 +2118,7 @@ public class GlowServer implements Server {
 
     @Override
     public void savePlayers() {
-        getOnlinePlayers().forEach(Player::saveData);
+        getOnlineView().forEach(Player::saveData);
     }
 
     @Override
@@ -2405,7 +2404,7 @@ public class GlowServer implements Server {
     @Override
     public void sendPluginMessage(Plugin source, String channel, byte[] message) {
         StandardMessenger.validatePluginMessage(getMessenger(), source, channel, message);
-        for (Player player : getOnlinePlayers()) {
+        for (Player player : getOnlineView()) {
             player.sendPluginMessage(source, channel, message);
         }
     }
@@ -2416,7 +2415,7 @@ public class GlowServer implements Server {
     @Override
     public Set<String> getListeningPluginChannels() {
         HashSet<String> result = new HashSet<>();
-        for (Player player : getOnlinePlayers()) {
+        for (Player player : getOnlineView()) {
             result.addAll(player.getListeningPluginChannels());
         }
         return result;

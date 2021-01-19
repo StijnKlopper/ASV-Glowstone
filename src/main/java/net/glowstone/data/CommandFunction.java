@@ -27,13 +27,18 @@ public class CommandFunction {
     public static CommandFunction read(String namespace, String name, File file)
             throws IOException {
         List<FunctionLine> lines = new ArrayList<>();
+
         Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            FunctionLine fl = FunctionLine.read(line);
-            if (fl != null) {
-                lines.add(fl);
+        try {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                FunctionLine fl = FunctionLine.read(line);
+                if (fl != null) {
+                    lines.add(fl);
+                }
             }
+        } finally {
+            scanner.close();
         }
         return new CommandFunction(namespace, name, lines);
     }

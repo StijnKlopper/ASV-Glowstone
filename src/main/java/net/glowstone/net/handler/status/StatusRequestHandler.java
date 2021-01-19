@@ -33,7 +33,7 @@ public final class StatusRequestHandler implements
     private static void choosePlayerSample(GlowServer server, PaperServerListPingEvent event) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        List<Player> players = new ArrayList<>(server.getOnlinePlayers());
+        List<Player> players = new ArrayList<>(server.getOnlineView());
         int sampleCount = server.getPlayerSampleCount();
         if (players.size() <= sampleCount) {
             sampleCount = players.size();
@@ -57,7 +57,7 @@ public final class StatusRequestHandler implements
         GlowServer server = session.getServer();
         StatusEvent event = new StatusEvent(
                 new GlowStatusClient(session), server.getMotd(),
-                server.getOnlinePlayers().size(), server.getMaxPlayers(),
+                server.getOnlineView().size(), server.getMaxPlayers(),
                 GlowServer.GAME_VERSION, GlowServer.PROTOCOL_VERSION,
                 server.getServerIcon());
 

@@ -358,6 +358,17 @@ public class OverworldGenerator extends GlowChunkGenerator {
         gen.setZScale(heightNoiseScaleZ);
         octaves.put("height", gen);
 
+        String[] octavesStringArray = {"roughness","roughness2"};
+
+        for(int i = 0; i < octavesStringArray.length; i++)
+        {
+            gen = new PerlinOctaveGenerator(seed, 16, 5, 33, 5);
+            gen.setXScale(coordinateScale);
+            gen.setYScale(heightScale);
+            gen.setZScale(coordinateScale);
+            octaves.put(octavesStringArray[i], gen);
+        }
+
         gen = new PerlinOctaveGenerator(seed, 16, 5, 33, 5);
         gen.setXScale(coordinateScale);
         gen.setYScale(heightScale);
@@ -558,6 +569,13 @@ public class OverworldGenerator extends GlowChunkGenerator {
                         totalWeight += weight;
                     }
                 }
+
+                // Prevent division by zero exception from taking place
+                if(totalWeight == 0 )
+                {
+                    totalWeight = 1;
+                }
+
                 avgHeightScale /= totalWeight;
                 avgHeightBase /= totalWeight;
                 avgHeightScale = avgHeightScale * 0.9D + 0.1D;

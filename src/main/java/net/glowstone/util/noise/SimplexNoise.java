@@ -263,48 +263,32 @@ public class SimplexNoise extends PerlinNoise {
         int gi3 = permMod12[ii + 1 + perm[jj + 1 + perm[kk + 1]]];
 
         // Calculate the contribution from the four corners
-        double t0 = 0.5 - x0 * x0 - y0 * y0 - z0 * z0;
-        double n0; // Noise contributions from the four corners
-        if (t0 < 0) {
-            n0 = 0.0;
-        } else {
-            t0 *= t0;
-            n0 = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
-        }
+        double n0 = calculateCoorners(x0, y0, z0, gi0);
 
-        double t1 = 0.5 - x1 * x1 - y1 * y1 - z1 * z1;
-        double n1;
-        if (t1 < 0) {
-            n1 = 0.0;
-        } else {
-            t1 *= t1;
-            n1 = t1 * t1 * dot(grad3[gi1], x1, y1, z1);
-        }
+        double n1 = calculateCoorners(x1, y1, z1, gi1);
 
-        double t2 = 0.5 - x2 * x2 - y2 * y2 - z2 * z2;
-        double n2;
-        if (t2 < 0) {
-            n2 = 0.0;
-        } else {
-            t2 *= t2;
-            n2 = t2 * t2 * dot(grad3[gi2], x2, y2, z2);
-        }
+        double n2 = calculateCoorners(x2, y2, z2, gi2);
 
         double x3 = x0 + G33; // Offsets for last corner in (x,y,z) coords
         double y3 = y0 + G33;
         double z3 = z0 + G33;
-        double t3 = 0.5 - x3 * x3 - y3 * y3 - z3 * z3;
-        double n3;
-        if (t3 < 0) {
-            n3 = 0.0;
-        } else {
-            t3 *= t3;
-            n3 = t3 * t3 * dot(grad3[gi3], x3, y3, z3);
-        }
+        double n3 = calculateCoorners(x3, y3, z3, gi3);
 
         // Add contributions from each corner to get the final noise value.
         // The result is scaled to stay just inside [-1,1]
         return 32.0 * (n0 + n1 + n2 + n3);
+    }
+
+    private double calculateCoorners(double x0, double y0, double z0, int gi0) {
+        double t0 = 0.5 - x0 * x0 - y0 * y0 - z0 * z0;
+        double n; // Noise contributions from the four corners
+        if (t0 < 0) {
+            n = 0.0;
+        } else {
+            t0 *= t0;
+            n = t0 * t0 * dot(grad3[gi0], x0, y0, z0);
+        }
+        return n;
     }
 
     // Inner class to speed up gradient computations

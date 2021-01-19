@@ -100,17 +100,16 @@ public class NetherGenerator extends GlowChunkGenerator {
         gen.setZScale(heightNoiseScaleZ);
         octaves.put("height", gen);
 
-        gen = new PerlinOctaveGenerator(seed, 16, 5, 17, 5);
-        gen.setXScale(coordinateScale);
-        gen.setYScale(heightScale);
-        gen.setZScale(coordinateScale);
-        octaves.put("roughness", gen);
+        String[] octavesStringArray = {"roughness","roughness2"};
 
-        gen = new PerlinOctaveGenerator(seed, 16, 5, 17, 5);
-        gen.setXScale(coordinateScale);
-        gen.setYScale(heightScale);
-        gen.setZScale(coordinateScale);
-        octaves.put("roughness2", gen);
+        for(int i = 0; i < octavesStringArray.length; i++)
+        {
+            gen = new PerlinOctaveGenerator(seed, 16, 5, 17, 5);
+            gen.setXScale(coordinateScale);
+            gen.setYScale(heightScale);
+            gen.setZScale(coordinateScale);
+            octaves.put(octavesStringArray[i], gen);
+        }
 
         gen = new PerlinOctaveGenerator(seed, 8, 5, 17, 5);
         gen.setXScale(coordinateScale / detailNoiseScaleX);

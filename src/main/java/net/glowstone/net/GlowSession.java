@@ -458,7 +458,7 @@ public class GlowSession extends BasicSession {
             }
             // statistics
             player.incrementStatistic(Statistic.LEAVE_GAME);
-            for (Player p : server.getOnlinePlayers()) {
+            for (Player p : server.getOnlineView()) {
                 if (p.getUniqueId().equals(player.getUniqueId())) {
                     continue;
                 }

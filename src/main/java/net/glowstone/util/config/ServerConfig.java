@@ -323,7 +323,7 @@ public class ServerConfig implements DynamicallyTypedMap<ServerConfig.Key> {
         return config;
     }
 
-    private boolean migrate() {
+    private boolean migrate() throws IOException {
         boolean migrateStatus = false;
 
         File bukkitYml = new File("bukkit.yml");
@@ -348,13 +348,24 @@ public class ServerConfig implements DynamicallyTypedMap<ServerConfig.Key> {
             config.set("worlds", bukkit.get("worlds"));
         }
 
+
+
         File serverProps = new File("server.properties");
         if (serverProps.exists()) {
             Properties props = new Properties();
+            FileInputStream fileInputStream = null;
             try {
-                props.load(new FileInputStream(serverProps));
+                fileInputStream = new FileInputStream((serverProps));
+                props.load(fileInputStream);
+
             } catch (IOException e) {
                 GlowServer.logger.log(Level.WARNING, "Could not migrate from " + serverProps, e);
+            }
+            finally {
+                if(fileInputStream != null)
+                {
+                    fileInputStream.close();
+                }
             }
 
             for (Key key : Key.values()) {

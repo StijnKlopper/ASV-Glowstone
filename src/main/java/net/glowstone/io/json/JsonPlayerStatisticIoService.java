@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.UUID;
 import net.glowstone.GlowServer;
 import net.glowstone.entity.GlowPlayer;
@@ -90,9 +91,10 @@ public class JsonPlayerStatisticIoService implements PlayerStatisticIoService {
         StatisticMap map = player.getStatisticMap();
         JSONObject json = new JSONObject(map.getValues());
         try {
-            FileWriter writer = new FileWriter(file, false);
-            writer.write(json.toJSONString());
-            writer.close();
+            try (FileWriter writer = new FileWriter(file, false)) {
+                writer.write(json.toJSONString());
+
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

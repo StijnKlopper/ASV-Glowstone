@@ -100,7 +100,7 @@ public class QueryHandler extends SimpleChannelInboundHandler<DatagramPacket> {
         writeString(buf, server.getMotd());
         writeString(buf, "SMP");
         writeString(buf, server.getWorlds().get(0).getName());
-        writeString(buf, String.valueOf(server.getOnlinePlayers().size()));
+        writeString(buf, String.valueOf(server.getOnlineView().size()));
         writeString(buf, String.valueOf(server.getMaxPlayers()));
         buf.order(ByteOrder.LITTLE_ENDIAN).writeShort(server.getPort());
         writeString(buf, getIpString());
@@ -127,7 +127,7 @@ public class QueryHandler extends SimpleChannelInboundHandler<DatagramPacket> {
         data.put("version", GlowServer.GAME_VERSION);
         data.put("plugins", plugins);
         data.put("map", server.getWorlds().get(0).getName());
-        data.put("numplayers", server.getOnlinePlayers().size());
+        data.put("numplayers", server.getOnlineView().size());
         data.put("maxplayers", server.getMaxPlayers());
         data.put("hostport", server.getPort());
         data.put("hostip", getIpString());
@@ -145,7 +145,7 @@ public class QueryHandler extends SimpleChannelInboundHandler<DatagramPacket> {
         buf.writeByte(0);
         // constant: \x01player_\x00\x00
         buf.writeBytes(new byte[]{0x01, 0x70, 0x6C, 0x61, 0x79, 0x65, 0x72, 0x5F, 0x00, 0x00});
-        for (Player player : server.getOnlinePlayers()) {
+        for (Player player : server.getOnlineView()) {
             writeString(buf, player.getName());
         }
         buf.writeByte(0);

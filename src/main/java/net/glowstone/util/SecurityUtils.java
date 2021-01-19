@@ -29,7 +29,7 @@ public final class SecurityUtils {
         KeyPair keyPair = null;
         try {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-            generator.initialize(1024);
+            generator.initialize(2048);
 
             keyPair = generator.generateKeyPair();
         } catch (NoSuchAlgorithmException ex) {

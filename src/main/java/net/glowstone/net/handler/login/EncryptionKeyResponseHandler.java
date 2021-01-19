@@ -50,10 +50,10 @@ public final class EncryptionKeyResponseHandler implements
     public void handle(GlowSession session, EncryptionKeyResponseMessage message) {
         PrivateKey privateKey = session.getServer().getKeyPair().getPrivate();
 
-        // create rsaCipher
+        // create rsaCipher and fully qualify the cipher
         Cipher rsaCipher;
         try {
-            rsaCipher = Cipher.getInstance("RSA"); // NON-NLS
+            rsaCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding"); // NON-NLS
         } catch (GeneralSecurityException ex) {
             ConsoleMessages.Error.Net.Crypt.RSA_INIT_FAILED.log(ex);
             session.disconnect(GlowstoneMessages.Kick.Crypt.RSA_INIT_FAILED.get());

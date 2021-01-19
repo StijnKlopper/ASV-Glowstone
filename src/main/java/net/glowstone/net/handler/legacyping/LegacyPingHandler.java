@@ -37,7 +37,7 @@ public class LegacyPingHandler extends ChannelInboundHandlerAdapter {
 
                 ServerListPingEvent legacyPingEvent = new ServerListPingEvent(
                     inetsocketaddress.getAddress(), server.getMotd(),
-                    server.getOnlinePlayers().size(), server.getMaxPlayers());
+                    server.getOnlineView().size(), server.getMaxPlayers());
                 EventFactory.getInstance().callEvent(legacyPingEvent);
 
                 switch (readableBytes) {
